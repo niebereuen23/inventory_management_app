@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+<body>
+   <%- include('./components/header') %>
+   <%- include('./components/search') %>
+
+   <div>
+      App goal:
+      <p>
+         To help gamers from communities to have an organized directory for their players and provide an insight on draft decision por pick/ban in captain mode for Dota 2 game. Particularly to keep track of the heroes the players often play, with some extra details. It also allows players to be categorized on teams, also showing some extra team details.
+         Knowing other player's styles can come a long way on not only improving draft decisions, but also improving coupling, player's sinergy within the community and overall improving the community.
+      </p>
+   </div>
+
+   <a href="/players">Players</a>
+   <a href="/teams">Teams</a>
+
+   <div>
+      <h3>Most used heroes:</h3>
+      <!-- Need highest pick rate for ALL heroes data: -->
+       <!-- Need highest pick rate for heroes X tier data: -->
+   </div>
+
+   <div>
+      <h3>Most rated heroes:</h3>
+      <!-- Need highest rate for ALL player's heroes data: -->
+      <!-- Need highest rated for heroes X tier data: -->
+   </div>
+
+   <%- include('./components/footer') %>
+</body>
+</html>
