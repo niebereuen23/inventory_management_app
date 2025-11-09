@@ -1,5 +1,5 @@
 const pool = require('./pool');
-import SQL from 'sql-template-strings';
+const SQL = require ('sql-template-strings');
 
 async function getPlayersTeamsList() {
    try {
@@ -32,5 +32,6 @@ async function getPlayersTeamsList() {
    }
 }
 
-// NOW WE HAVE THE SEARCH QUERY ALMOST READY
-// NEXT: IMPLEMENT THE VIEWS??? POGGERS!!!
+module.exports = {
+   getPlayersTeamsList
+}

@@ -21,17 +21,161 @@
    <a href="/teams">Teams</a>
 
    <div>
-      <h3>Most used heroes:</h3>
+      <h3>Top 10 Spammers:</h3>
       <!-- Need highest pick rate for ALL heroes data: -->
-       <!-- Need highest pick rate for heroes X tier data: -->
+      <!-- Need highest pick rate for heroes X tier data: -->
+      <label for="spammer_tier_selector">Tier:</label>
+      <select name="tier_selector" id="spammer_tier_selector">
+         <option selected>All</option>
+         <option>1</option>
+         <option>2</option>
+         <option>3</option>
+         <option>4</option>
+         <option>5</option>
+      </select>
+      <table>
+         <thead>
+            <th>Pick Rate</th>
+            <th>Player</th>
+            <th colspan="2">Tier</th>
+            <th colspan="2">Hero</th>
+            <th>D2PT WR</th>
+         </thead>
+         <tbody id="spammer_table_body">
+            <% for (let row of highestPickRate) { %>
+               <tr>
+                  <td><%= row.pick_rate %></td>
+                  <td><%= row.player_name %></td>
+                  <td><%= row.tier %></td>
+                  <td><%= row.sub_tier %></td>
+                  <td><%= row.hero_name %></td>
+                  <td><img src="<%= row.hero_img %>" alt=""></td>
+                  <td>57%</td>
+               </tr>
+            <% } %>
+         </tbody>
+      </table>
    </div>
 
    <div>
-      <h3>Most rated heroes:</h3>
+      <h3>Top 10 Prohibidos:</h3>
       <!-- Need highest rate for ALL player's heroes data: -->
       <!-- Need highest rated for heroes X tier data: -->
+      <label for="prohibido_tier_selector">Tier:</label>
+      <select name="tier_selector" id="prohibido_tier_selector">
+         <option selected>All</option>
+         <option>1</option>
+         <option>2</option>
+         <option>3</option>
+         <option>4</option>
+         <option>5</option>
+      </select>
+      <table>
+         <thead>
+            <th>Hero Rating</th>
+            <th>Player</th>
+            <th colspan="2">Tier</th>
+            <th colspan="2">Hero</th>
+            <th>D2PT WR</th>
+         </thead>
+         <tbody id="prohibido_table_body">
+            <% for (let row of highestHeroRate) { %>
+               <tr>
+                  <td><%= row.hero_rating %></td>
+                  <td><%= row.player_name %></td>
+                  <td><%= row.tier %></td>
+                  <td><%= row.sub_tier %></td>
+                  <td><%= row.hero_name %></td>
+                  <td><img src="<%= row.hero_img %>" alt=""></td>
+                  <td>57%</td>
+               </tr>
+            <% } %>
+         </tbody>
+      </table>
    </div>
 
    <%- include('./components/footer') %>
+   <script>
+      const highestHeroRate = <%- JSON.stringify(highestHeroRate) %>;
+      const highestPickRate = <%- JSON.stringify(highestPickRate) %>;
+
+      const spammerTierSelector = document.querySelector('#spammer_tier_selector');
+      const spammerBody = document.querySelector('#spammer_table_body');
+      const spammerApiEndpoint = 'pick-rate';
+
+      const prohibidoTierSelector = document.querySelector('#prohibido_tier_selector');
+      const prohibidoBody = document.querySelector('#prohibido_table_body');
+      const prohibidoApiEndpoint = 'hero-rate';
+      
+      // these are also the property names of the db query returned rows + D2PT WR
+      const spammerTableColumns = ['pick_rate', 'player_name', 'tier', 'sub_tier', 'hero_name', 'hero_img', 'D2PT WR'];
+      const prohibidoTableColumns = ['hero_rating', 'player_name', 'tier', 'sub_tier', 'hero_name', 'hero_img', 'D2PT WR'];
+
+      // attach event listeners
+      customAddEventListener(spammerTierSelector, spammerBody, spammerApiEndpoint, highestPickRate, spammerTableColumns);
+      customAddEventListener(prohibidoTierSelector, prohibidoBody, prohibidoApiEndpoint, highestHeroRate, prohibidoTableColumns);
+
+
+      // HELPER FUNCTIONS
+      async function getRatePerTier(api, tier, row_limit) {
+         try {
+            // build url with params
+            const baseUrl = `/api/${api}`;
+            const params = {
+               tier: tier,
+               row_limit: row_limit
+            }
+            // 2. Construct the URL with parameters using URLSearchParams
+            const queryString = new URLSearchParams(params).toString();
+            const urlWithParams = `${baseUrl}?${queryString}`;
+            
+            const response = await fetch(urlWithParams);
+            if (!response.ok) {
+               throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+         } catch (error) {
+            console.error('Error fetching data:', error);
+         }
+      }
+
+      function customAddEventListener(toWhere, whatBody, fromWhatAPI, reusableData, arrayOnWhatPropsAndItsOrder) {
+         toWhere.addEventListener('change', function() {
+            const selectedValue = this.value;
+
+            // reuse value when page first loaded if tier selected is 'All'
+            let rateRows = selectedValue !== 'All' ? getRatePerTier(fromWhatAPI, selectedValue, 10) : new Promise((good) => {
+               good([...reusableData])
+            });
+
+            rateRows.then((rows) => {
+               // clear table body and fill in
+               whatBody.textContent = '';
+               for (let row of rows) {
+                  const tr = document.createElement('tr');
+                  whatBody.appendChild(tr);
+
+                  for (let property of arrayOnWhatPropsAndItsOrder) {
+                     const td = document.createElement('td');
+                     tr.appendChild(td);
+
+                     if (property === 'hero_img') {
+                        const img = document.createElement('img');
+                        td.appendChild(img);
+                        img.src = row[property];
+                        continue;
+                     }
+                     if (property === 'D2PT WR') {
+                        td.textContent = '69%';
+                        continue;
+                     }
+                     td.textContent = row[property];
+                     
+                  }
+               }
+            })
+         })
+      }
+   </script>
 </body>
 </html>

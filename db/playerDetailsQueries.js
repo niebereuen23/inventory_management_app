@@ -1,5 +1,5 @@
 const pool = require('./pool');
-import SQL from 'sql-template-strings';
+const SQL = require ('sql-template-strings');
 
 async function getPlayerDetails(id) {
    try {
@@ -43,7 +43,7 @@ async function getPlayerDetails(id) {
       )
       return rows;
    } catch (error) {
-      console.error('Database query failed:', error.message);
+      console.error('getPlayerDetails query failed:', error.message);
       throw error;
    }
 }
@@ -68,7 +68,7 @@ async function getPlayerRoles(id) {
       )
       return rows;
    } catch (error) {
-      console.error('Database query failed:', error.message);
+      console.error('getPlayerRoles query failed:', error.message);
       throw error;
    }
 }
@@ -100,7 +100,7 @@ async function getPlayerHeroes(id) {
       )
       return rows;
    } catch (error) {
-      console.error('Database query failed:', error.message);
+      console.error('getPlayerHeroes query failed:', error.message);
       throw error;
    }
 }

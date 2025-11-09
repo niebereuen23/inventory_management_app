@@ -1,5 +1,5 @@
 const pool = require('./pool');
-import SQL from 'sql-template-strings';
+const SQL = require ('sql-template-strings');
 
 async function postNewTeam(name, team_prof_img_url, extra_description) {
    try {
@@ -14,11 +14,11 @@ async function postNewTeam(name, team_prof_img_url, extra_description) {
       )
       return rows[0].id
    } catch (error) {
-      console.error('Database query failed:', error.message);
+      console.error('postNewTeam query failed:', error.message);
       throw error;
    }
 }
-// CURRENTLY: DECIDING WHAT AND HOW TO IMPLEMENT FOR SEARCH BAR
+
 async function getPlayersList() {
    try {
       const { rows } = await pool.query(
@@ -32,7 +32,7 @@ async function getPlayersList() {
       )
       return rows;
    } catch (error) {
-      console.error('Database query failed:', error.message);
+      console.error('getPlayersList query failed:', error.message);
       throw error;
    }
 }
@@ -48,7 +48,7 @@ async function updatePlayerTeam(playerId, teamId) {
          [playerId, teamId]
       )
    } catch (error) {
-      console.error('Database query failed:', error.message);
+      console.error('updatePlayerTeam query failed:', error.message);
       throw error;
    }
 }

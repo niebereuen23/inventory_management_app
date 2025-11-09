@@ -1,5 +1,5 @@
 const pool = require('./pool');
-import SQL from 'sql-template-strings';
+const SQL = require ('sql-template-strings');
 
 async function getHeroeList() {
    try {
@@ -13,7 +13,8 @@ async function getHeroeList() {
       )
       return rows;
    } catch (error) {
-      console.error('Database query failed:', err.message);
+      console.error('getHeroeList query failed:', err.message);
+      throw error;
    }
 }
 
@@ -29,7 +30,8 @@ async function getTeamsList() {
       )
       return rows;
    } catch (error) {
-      console.error('Database query failed:', err.message);
+      console.error('getTeamsList query failed:', err.message);
+      throw error;
    }
 }
 
@@ -47,7 +49,8 @@ async function getPlaystyleList() {
       )
       return rows;
    } catch (error) {
-      console.error('Database query failed:', err.message);
+      console.error('getPlaystyleList query failed:', err.message);
+      throw error;
    }
 }
 
@@ -71,7 +74,8 @@ async function postNewPlayerMainDetails(playerObj) {
       return results.rows[0].id
 
    } catch (error) {
-      console.error('Database query failed:', err.message);
+      console.error('postNewPlayerMainDetails query failed:', err.message);
+      throw error;
    }
 }
 
@@ -87,7 +91,8 @@ async function postNewPlayerPlayStyle(playerId, playstyleIdArr) {
          )
       }
    } catch (error) {
-      console.error('Database query failed:', err.message);
+      console.error('postNewPlayerPlayStyle query failed:', err.message);
+      throw error;
    }
 }
 
@@ -103,7 +108,8 @@ async function postNewPlayerRole(playerId, roleId, tierId, subtierId, isMain) {
          [playerId, roleId, tierId, subtierId, isMain]
       )
    } catch (error) {
-      console.error('Database query failed:', err.message);
+      console.error('postNewPlayerRole query failed:', err.message);
+      throw error;
    }
 }
 
@@ -120,6 +126,7 @@ async function postNewPlayerHero(playerId, heroId, heroRating, pickRate, roleId)
       )
    } catch (error) {
       console.error('Database query failed:', err.message);
+      throw error;
    }
 }
 

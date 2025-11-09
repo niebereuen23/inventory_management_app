@@ -1,5 +1,5 @@
 const pool = require('./pool');
-import SQL from 'sql-template-strings';
+const SQL = require ('sql-template-strings');
 
 async function getAllTeams() {
    try {
@@ -13,7 +13,7 @@ async function getAllTeams() {
       )
       return rows;
    } catch (error) {
-      console.error('Database query failed:', error.message);
+      console.error('getAllTeams query failed:', error.message);
       throw error;
    }
 }

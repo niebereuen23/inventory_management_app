@@ -81,6 +81,7 @@
 4. Database implementation and initial seed
 5. Implement Very basic Views  II: polish 1st view implementation and do basic ejs files.
 6. Define queries (CURRENTLY HERE! 31-10-25!)
+7. Implement the Views! (08-11-25)
 
 ## LEARNING FROM ERROR:
 - filling out tables where the data in one (e.g. players_roles which obviously has a role column) depends on another (e.g. players_heroes which has a role column) adds more complexity when creating queries. For example, if a player does not add a role but still adds a hero which plays for a role he didn't add, the query must consider such cases (e.g. using LEFT JOIN instead of just JOIN).
